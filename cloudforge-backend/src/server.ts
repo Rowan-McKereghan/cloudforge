@@ -13,7 +13,15 @@ const prisma = new PrismaClient();
 
 app.get('/materials', async (req, res) => {
   const materials = await prisma.material.findMany({
-    include: { inventory: true }
+    include: { 
+      inventory: {
+        include: {
+          purchases: {
+            orderBy: { date: 'desc' } // Newest first
+          }
+        }
+      }
+    }
   });
   res.json(materials);
 });

@@ -18,15 +18,24 @@ export interface Material {
   inventory?: Inventory
 }
 
+export interface PurchaseHistory {
+  id: string;
+  quantity: number;
+  vendor?: string;
+  date: string;
+  inventoryId: string;
+}
+
 export interface Inventory {
-  id: string,
-  onHand: number,
-  allocated: number
+  id: string;
+  onHand: number;
+  allocated: number;
+  purchases: PurchaseHistory[];
 }
 
 function App() {
   const [materials, setMaterials] = useState<Material[]>([]);
-  const [inventory, setInventory] = useState<Inventory[]>([]);
+  // const [inventory, setInventory] = useState<Inventory[]>([]);
 
   const getAndSetMats = () => {
     axios.get('http://localhost:3000/materials').then((res) => {

@@ -1,5 +1,5 @@
 // components/ManageInventory.tsx
-import { use, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { Material } from '../App';
 
@@ -8,11 +8,20 @@ interface Props {
   onInventoryUpdated: () => void;
 }
 
+interface Purchase {
+  id: string;
+  quantity: number;
+  vendor?: string;
+  date: string;
+}
+
 export default function ManageInventory({ materials, onInventoryUpdated }: Props) {
   const [quantity, setQuantity] = useState('');
   const [vendor, setVendor] = useState('');
   const [operation, setOperation] = useState<'add' | 'remove'>('add');
   const [materialIndex, setMaterialIndex] = useState('0');
+  const purchases: Purchase[] = materials[parseInt(materialIndex)]?.inventory?.purchases || [];
+  const [showHistory, setShowHistory] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,6 +103,46 @@ export default function ManageInventory({ materials, onInventoryUpdated }: Props
           {operation === 'add' ? 'Receive' : 'Adjust'}
         </button>
       </form>
+      <div className="mt-4">
+        <button
+          onClick={() => setShowHistory(!showHistory)}
+          className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400"
+        >
+          {showHistory ? 'Hide Purchase History' : 'Show Purchase History'}
+        </button>
+
+        {showHistory && (
+          <div className="mt-2 max-h-48 overflow-y-auto">
+            <h4 className="font-medium mb-2 dark:text-white">Purchase History</h4>
+            {purchases.length === 0 ? (
+              <p className="text-gray-500 dark:text-gray-400">No purchase history available</p>
+            ) : (
+              <div className="space-y-2">
+                {purchases.map((purchase) => (
+                  <div 
+                    key={purchase.id}
+                    className="p-2 bg-white dark:bg-gray-700 rounded border dark:border-gray-600"
+                  >
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-900 dark:text-gray-200">
+                        {new Date(purchase.date).toLocaleDateString()}
+                      </span>
+                      <span className="font-medium dark:text-white">
+                        +{purchase.quantity}
+                      </span>
+                    </div>
+                    {purchase.vendor && (
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                        Vendor: {purchase.vendor}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
       <div className="mt-2 text-sm dark:text-gray-300">
         Current On Hand: {materials[parseInt(materialIndex)]?.inventory?.onHand || '0'}
       </div>
