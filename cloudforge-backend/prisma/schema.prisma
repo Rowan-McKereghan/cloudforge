@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Material {
+  id           String  @id @default(uuid())
+  name         String
+  length       Float
+  lengthUnits  String
+  width        Float
+  widthUnits   String
+  thickness    Float
+  thicknessUnits    String
+  grade        String
+  defaultPrice Float
+  priceUnits   String
+  inventory    Inventory?
+}
+
+model PurchaseHistory {
+  id         String   @id @default(uuid())
+  inventoryId String
+  inventory  Inventory @relation(fields: [inventoryId], references: [id])
+  quantity   Float
+  vendor     String?
+  date       DateTime @default(now())
+}
+
+model Inventory {
+  id         String          @id @default(uuid())
+  materialId String          @unique
+  material   Material        @relation(fields: [materialId], references: [id])
+  onHand     Float           @default(0)
+  allocated  Float           @default(0)
+  purchases  PurchaseHistory[]
+}
