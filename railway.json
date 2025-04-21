@@ -1,0 +1,20 @@
+{
+    "builds": [
+      {
+        "src": "cloudforge-backend/package.json",
+        "use": "@railway/app-function-node@latest",
+        "config": {
+          "npmVersion": "8.x"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "handle": "filesystem"
+      },
+      {
+        "src": ".*",
+        "dest": "/cloudforge-backend"
+      }
+    ]
+  }
