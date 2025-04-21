@@ -28,6 +28,7 @@ export default function ManageInventory({ materials, onInventoryUpdated }: Props
     var materialId = materials[parseInt(materialIndex)].id;
     
     try { 
+      console.log(materialId);
       await axios.put(`http://localhost:3000/inventory/${materialId}`, {
         operation,
         quantity: parseFloat(quantity),
@@ -53,7 +54,7 @@ export default function ManageInventory({ materials, onInventoryUpdated }: Props
         >
         {materials.map((material, index) => (
             <option key={material.id} value={index.toString()}>
-                {material.name}
+                {material.name + " (" + material.grade + ")"}
             </option>
         ))}
         </select>

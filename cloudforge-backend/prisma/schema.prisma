@@ -27,6 +27,7 @@ model Material {
   defaultPrice Float
   priceUnits   String
   inventory    Inventory?
+  quoteItems     QuoteItem[]      
 }
 
 model PurchaseHistory {
@@ -45,4 +46,105 @@ model Inventory {
   onHand     Float           @default(0)
   allocated  Float           @default(0)
   purchases  PurchaseHistory[]
+}
+
+model Quote {
+  id          String      @id @default(uuid())
+  customerName String
+  items       QuoteItem[]
+  status      QuoteStatus @default(DRAFT)
+  total       Float
+  createdAt   DateTime    @default(now())
+  salesOrder  SalesOrder?
+}
+
+model SalesOrder {
+  id       String  @id @default(uuid())
+  quote    Quote   @relation(fields: [quoteId], references: [id])
+  quoteId  String  @unique
+  customerName String
+  shipments Shipment[]
+  invoice  Invoice?
+}
+
+model Shipment {
+  id           String         @id @default(uuid())
+  salesOrder   SalesOrder     @relation(fields: [salesOrderId], references: [id])
+  salesOrderId String
+  carrier      String
+  tracking     String?
+  dispatchedAt DateTime       @default(now())
+  estimatedDelivery  DateTime @default(now())
+  status       ShipmentStatus @default(DISPATCHED)
+  invoice      Invoice?       @relation(fields: [invoiceId], references: [id])
+  invoiceId    String?
+}
+
+model Invoice {
+  id           String        @id @default(uuid())
+  salesOrder   SalesOrder    @relation(fields: [salesOrderId], references: [id])
+  salesOrderId String        @unique
+  number       String        @unique
+  issuedAt     DateTime      @default(now())
+  dueDate      DateTime
+  subtotal     Float
+  taxRate      Float         @default(0.0)
+  discount     Float         @default(0.0)
+  total        Float
+  status       InvoiceStatus @default(ISSUED)
+  payments     Payment[]
+  shipments    Shipment[]
+}
+
+model QuoteItem {
+  id          String   @id @default(uuid())
+  quote       Quote    @relation(fields: [quoteId], references: [id])
+  quoteId     String
+  material    Material @relation(fields: [materialId], references: [id])
+  materialId  String
+  quantity    Float
+  price       Float    // Allows price overrides
+  notes       String?
+}
+
+enum QuoteStatus {
+  DRAFT
+  SENT
+  APPROVED
+  REJECTED
+}
+
+enum ShipmentStatus {
+  PREPARING
+  DISPATCHED
+  IN_TRANSIT
+  DELIVERED
+  DELAYED
+  CANCELLED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  VOID
+}
+
+model Payment {
+  id         String   @id @default(uuid())
+  invoice    Invoice  @relation(fields: [invoiceId], references: [id])
+  invoiceId  String
+  amount     Float
+  method     PaymentMethod @default(WIRE)
+  reference  String?
+  paidAt     DateTime @default(now())
+}
+
+enum PaymentMethod {
+  CASH
+  CHECK
+  WIRE
+  CREDIT_CARD
 }

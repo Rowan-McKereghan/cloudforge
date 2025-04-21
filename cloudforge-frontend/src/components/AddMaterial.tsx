@@ -8,8 +8,8 @@ interface Props {
 }
 
 export default function AddMaterial({onMaterialAdded}: Props) {
-  const defaultForm: Material = {id: '', name: '', grade: '', length: 0, width: 0, thickness: 0, 
-  defaultPrice: 0, lengthUnits: '', widthUnits: '', thicknessUnits: '', priceUnits: ''};
+  const defaultForm: Material = {name: '', grade: '', length: 0, width: 0, thickness: 0, 
+  defaultPrice: 0, lengthUnits: 'in', widthUnits: 'in', thicknessUnits: 'in', priceUnits: 'CWT'};
 
   const [formData, setFormData] = useState<Material>({...defaultForm});
 
