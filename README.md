@@ -54,17 +54,21 @@ GET /materials – get list of all material objects
 POST /materials – add new material object(s) to database
 
 GET /inventory – get list of all inventory objects
-PUT /inventory/:materialId – add new inventory object related to material being added to database
+PUT /inventory/:materialId – add new inventory object related
+                              to material being added to database
 
 GET /quotes – get list of all quote objects
 POST /quotes – add new quote object(s) to database
-POST /quotes/:id/approve – approve quote based on quote id, update allocated stock, generate sales order automatically
+POST /quotes/:id/approve – approve quote based on quote id, update allocated
+                            stock, generate sales order automatically
 
 GET /sales-orders – get list of all sales order objects
-POST /sales-orders/:id/shipments – generate new shipment and invoice relating to sales order id
+POST /sales-orders/:id/shipments – generate new shipment and
+                                    invoice relating to sales order id
 
 GET /invoices – get list of all invoice objects
-POST /invoices/:id/payments – generate new payment relating to invoice id, updates status of invoice
+POST /invoices/:id/payments – generate new payment relating to
+                                invoice id, updates status of invoice
 ```
 
 ## Technology Stack
