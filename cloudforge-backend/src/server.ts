@@ -3,7 +3,7 @@ import cors from 'cors';
 import { InvoiceStatus, PrismaClient } from '@prisma/client';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const prisma = new PrismaClient();
 
 app.use(cors());
@@ -339,5 +339,5 @@ app.post('/invoices/:id/payments', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Backend running on http://localhost:${port}`);
+  console.log(`Backend running on port ${port}`);
 });
