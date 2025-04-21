@@ -33,7 +33,7 @@ export default function ManageSalesOrders({approve, ship, setShip}: Props) {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/sales-orders');
+      const response = await axios.get(import.meta.env.LIVE_URL + '/sales-orders');
       setOrders(response.data);
       setShip(ship + 1);
     } catch (error) {
@@ -43,7 +43,7 @@ export default function ManageSalesOrders({approve, ship, setShip}: Props) {
 
   const createShipment = async () => {
     try {
-      await axios.post(`http://localhost:3000/sales-orders/${selectedOrder}/shipments`, {
+      await axios.post(import.meta.env.LIVE_URL + `/sales-orders/${selectedOrder}/shipments`, {
         carrier,
         tracking,
         estimatedDelivery: estimateDate

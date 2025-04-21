@@ -16,7 +16,7 @@ export default function AddMaterial({onMaterialAdded}: Props) {
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       
-      axios.post('http://localhost:3000/materials', formData).then((res) => {
+      axios.post(import.meta.env.LIVE_URL + '/materials', formData).then((res) => {
           if(res.status === 201) {
             setFormData({...defaultForm});
             onMaterialAdded();

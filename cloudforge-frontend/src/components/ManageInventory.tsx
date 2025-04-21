@@ -29,7 +29,7 @@ export default function ManageInventory({ materials, onInventoryUpdated }: Props
     
     try { 
       console.log(materialId);
-      await axios.put(`http://localhost:3000/inventory/${materialId}`, {
+      await axios.put(import.meta.env.LIVE_URL + `/inventory/${materialId}`, {
         operation,
         quantity: parseFloat(quantity),
         vendor: operation === 'add' ? vendor : undefined

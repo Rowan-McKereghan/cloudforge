@@ -30,7 +30,7 @@ export default function ViewQuotes({buttonClick, getAndSetMats, approve, setAppr
 
   const fetchQuotes = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/quotes');
+      const response = await axios.get(import.meta.env.LIVE_URL + '/quotes');
       setQuotes(response.data);
     } catch (error) {
       console.error('Error fetching quotes:', error);
@@ -39,7 +39,7 @@ export default function ViewQuotes({buttonClick, getAndSetMats, approve, setAppr
 
   const approveQuote = async (quoteId: string) => {
     try {
-      await axios.post(`http://localhost:3000/quotes/${quoteId}/approve`);
+      await axios.post(import.meta.env.LIVE_URL + `/quotes/${quoteId}/approve`);
       fetchQuotes();
       getAndSetMats();
       setApprove(approve + 1);

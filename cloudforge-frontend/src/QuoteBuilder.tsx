@@ -31,7 +31,7 @@ export default function QuoteBuilder({getAndSetMats}: Props) {
 
   // Fetch initial data
   useEffect(() => {
-    axios.get('http://localhost:3000/materials').then(res => setMaterials(res.data));
+    axios.get(import.meta.env.LIVE_URL + '/materials').then(res => setMaterials(res.data));
   }, []);
 
   // Calculate total when items change
@@ -62,7 +62,7 @@ export default function QuoteBuilder({getAndSetMats}: Props) {
     };
 
     try {
-      await axios.post('http://localhost:3000/quotes', quoteData);
+      await axios.post(import.meta.env.LIVE_URL + '/quotes', quoteData);
       setToggle(!toggle);
       // Reset form or redirect
     } catch (error) {

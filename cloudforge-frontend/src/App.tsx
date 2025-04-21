@@ -37,9 +37,8 @@ export interface Inventory {
 function App() {
   const [materials, setMaterials] = useState<Material[]>([]);
   // const [inventory, setInventory] = useState<Inventory[]>([]);
-
   const getAndSetMats = () => {
-    axios.get('http://localhost:3000/materials').then((res) => {
+    axios.get(import.meta.env.LIVE_URL + '/materials').then((res) => {
       let temparr: Material[] = [];
       res.data.map((material: Material) => {
         temparr.push({

@@ -28,9 +28,10 @@ export default function ManageInvoices({ship}: Props) {
   const [paymentAmount, setPaymentAmount] = useState('');
   const [invoiceIndex, setInvoiceIndex] = useState(0);
 
+
   const fetchInvoices = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/invoices');
+      const response = await axios.get(import.meta.env.LIVE_URL + '/invoices');
       setInvoices(response.data);
     } catch (error) {
       console.error('Error fetching invoices:', error);
@@ -39,7 +40,7 @@ export default function ManageInvoices({ship}: Props) {
 
   const makePayment = async (invoiceId: string) => {
     try {
-      await axios.post(`http://localhost:3000/invoices/${invoiceId}/payments`, {
+      await axios.post(import.meta.env.LIVE_URL + `/invoices/${invoiceId}/payments`, {
         amount: parseFloat(paymentAmount)
       });
       fetchInvoices();
